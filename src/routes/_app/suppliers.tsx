@@ -210,12 +210,6 @@ function PurchaseForm({ supplierId, onDone }: { supplierId: string; onDone: () =
       }).select().single();
       if (error) throw error;
 
-      if (cardId) {
-        const { data: card } = await supabase.from("cards").select("spent_amount").eq("id", cardId).single();
-        const currentSpent = Number(card?.spent_amount ?? 0);
-        await supabase.from("cards").update({ spent_amount: currentSpent + value }).eq("id", cardId);
-      }
-
       if (inst > 1) {
         const per = +(value / inst).toFixed(2);
         const rows = Array.from({ length: inst }, (_, i) => {
